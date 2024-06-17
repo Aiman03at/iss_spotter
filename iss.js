@@ -35,23 +35,26 @@ const fetchMyIP = function(callback) {
 
 ///FetchCords by coordinates
 /**
- * @param
+ * take in two arguments: ip (string) and callback
+ * @returns co-ordinates when successfull
  */
  const fetchCoordsByIP = function(ip,callback)  {
   
 needle.get(`http://ipwho.is/${ip}`,(error, response, body) => {
   
-  if (error) return (error,null);
-  
+  if (error) callback(error,null);
+  ///if response is not successfulll
   if(response.statusCode !== 200) {
     callback(Error(`Status code ${response.statusCode}when fetching coordinates`));
     return;
   }
-  
-  
-  const latitude = body.latitude
+  ///if the successfull
+  if (response.statusCode === 200) {
+    console.log("Successfull");
+    const latitude = body.latitude
     const longitude = body.longitude
     callback(null, {latitude, longitude});
+}
  });
  }
 
