@@ -27,11 +27,30 @@ const fetchMyIP = function(callback) {
       callback(Error(`Status Code ${response.statusCode} when fetching IP: ${body}`), null);
       return;
     }
-
     const ip = body.ip;
-    callback(null, ip);
+    callback(null,ip);
   });
 };
 
- 
-module.exports = fetchMyIP ;
+
+///FetchCords by coordinates
+/**
+ * 
+ */
+ const fetchCoordsByIP = function(ip,callback)  {
+  ip = fetchMyIP
+needle.get("http://ipwho.is/${ip}",(error, response, body) => {
+  if (error) return (error,null);
+  if(response.statusCode !== 200) {
+    callback(Error(`Status code ${response.statusCode}when fetching coordinates`));
+    return;
+  }
+
+  console.log(body);
+  const latitude = body.latitude
+    const longitude = body.longitude
+    callback(null, {latitude, longitude});
+ });
+ }
+
+module.exports = {fetchMyIP , fetchCoordsByIP };
