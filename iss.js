@@ -35,18 +35,20 @@ const fetchMyIP = function(callback) {
 
 ///FetchCords by coordinates
 /**
- * 
+ * @param
  */
  const fetchCoordsByIP = function(ip,callback)  {
-  ip = fetchMyIP
-needle.get("http://ipwho.is/${ip}",(error, response, body) => {
+  
+needle.get(`http://ipwho.is/${ip}`,(error, response, body) => {
+  
   if (error) return (error,null);
+  
   if(response.statusCode !== 200) {
     callback(Error(`Status code ${response.statusCode}when fetching coordinates`));
     return;
   }
-
-  console.log(body);
+  
+  
   const latitude = body.latitude
     const longitude = body.longitude
     callback(null, {latitude, longitude});
