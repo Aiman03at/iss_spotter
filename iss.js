@@ -48,13 +48,17 @@ needle.get(`http://ipwho.is/${ip}`,(error, response, body) => {
     callback(Error(`Status code ${response.statusCode}when fetching coordinates`));
     return;
   }
+ //// checking for invalid ip address
+  if (body.success === false) {
+    return callback(new Error('Invalid IP address provided.'));
+}
   ///if the successfull
-  if (response.statusCode === 200) {
+  
     console.log("Successfull");
     const latitude = body.latitude
     const longitude = body.longitude
     callback(null, {latitude, longitude});
-}
+
  });
  }
 
