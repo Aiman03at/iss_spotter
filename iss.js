@@ -27,8 +27,15 @@ const fetchMyIP = function(callback) {
       callback(Error(`Status Code ${response.statusCode} when fetching IP: ${body}`), null);
       return;
     }
-    const ip = body.ip;
+    
+    const data =response.body;
+    if (data.ip) {
+    const ip = data.ip;
+    
     callback(null,ip);
+    }else {
+      callback(new Error('Invalid ip address'), null);
+    }
   });
 };
 
@@ -41,27 +48,44 @@ const fetchMyIP = function(callback) {
  const fetchCoordsByIP = function(ip,callback)  {
   
 needle.get(`http://ipwho.is/${ip}`,(error, response, body) => {
-  
+ 
   if (error) callback(error,null);
   ///if response is not successfulll
   if(response.statusCode !== 200) {
     callback(Error(`Status code ${response.statusCode}when fetching coordinates`));
     return;
+
   }
  //// checking for invalid ip address
  
   if (body.success === false) {
     return callback(new Error('Invalid IP address provided.'));
-}
+} 
   ///if the successfull
-  
-    
-    const latitude = body.latitude
-    const longitude = body.longitude
-    callback(null, {latitude, longitude});
 
- });
- }
+  
+  const data = response.body;
+
+    // Check if the response body contains latitude and longitude
+    if (data && data.latitude && data.longitude) {
+      const coordinates = {
+        latitude: data.latitude,
+        longitude: data.longitude
+        
+      };
+      console.log(coordinates);
+      callback(null, coordinates);
+    } else {
+      callback(new Error('Invalid response format: missing latitude or longitude'), null);
+    }
+  });
+}
+
+    
+    
+   
+ 
+ 
 
 
 
@@ -101,7 +125,12 @@ const fetchISSFlyOverTimes = function(coords, callback) {
   }
   
  const res =body.response;
+ if (res) {
+
  callback(null,res);
+ } else {
+  callback(new Error('Invalid response format: missing response body '), null);
+ }
 
 
 
