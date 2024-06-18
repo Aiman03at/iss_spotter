@@ -1,6 +1,13 @@
 ///this will require and run our main fetch function.
 
-
+const printPassTimes = function(passTimes) {
+  for (const pass of passTimes) {
+    const datetime = new Date(0);
+    datetime.setUTCSeconds(pass.risetime);
+    const duration = pass.duration;
+    console.log(`Next pass at ${datetime} for ${duration} seconds!`);
+  }
+};
 
 const { nextISSTimesForMyLocation } = require('./iss');
 
@@ -10,7 +17,7 @@ nextISSTimesForMyLocation((error, passTimes) => {
   }
   
   // success, print out the deets!
-  console.log(passTimes);
+  printPassTimes(passTimes);
 });
 
 

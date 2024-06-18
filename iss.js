@@ -73,7 +73,7 @@ needle.get(`http://ipwho.is/${ip}`,(error, response, body) => {
         longitude: data.longitude
         
       };
-      console.log(coordinates);
+      
       callback(null, coordinates);
     } else {
       callback(new Error('Invalid response format: missing latitude or longitude'), null);
